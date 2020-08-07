@@ -26,7 +26,7 @@ cat /mnt/ssd1/cmdline.txt
 echo "-------- unmounting partitions and resizing root"
 sudo umount /dev/sda1
 sudo umount /dev/sda2
-sudo e2fsck -f /dev/sda2
+sudo e2fsck -y -f /dev/sda2
 sudo resize2fs /dev/sda2
 
 echo "======== done setting up usb boot partitions"

@@ -18,7 +18,7 @@ sed -i -e 's/^BOOT_ORDER=.*/BOOT_ORDER=0xf124/' bootconf.txt
 sed -i -e 's/^ENABLE_SELF_UPDATE=.*/ENABLE_SELF_UPDATE=0/' bootconf.txt
 
 echo "Building new firmware bin..."
-rpi-eeprom-config --out pieeprom-new.bin --config bootconf.txt input-eeprom.bin
+rpi-eeprom-config --out pieeprom-new.bin --config bootconf.txt pieeprom.bin
 
 read -p "Press any key to apply new firmware" -n1 -s
 echo "Applying the new firmware..."

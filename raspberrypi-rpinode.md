@@ -207,7 +207,7 @@ Verify the file copied correctly.  You need to be in the `ISOs` folder for this 
 
     2020-05-27-raspios-buster-lite-armhf.img: OK
 
-Unmount the USB drive.
+Unmount the USB drive and unplug it.
 
     pi@pi-sd-card:~ $ sudo umount /dev/sda1
 

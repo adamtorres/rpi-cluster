@@ -36,7 +36,7 @@ Plug the SD card into the Pi, and boot it up.  Default user/pass is pi/raspberry
 
     pi@raspberry:~ $ sudo /boot/provision/manual/sd-01-raspi-config.sh
 
-Use raspi-config to attach to the wifi.  It will claim "sudo: unable to resolve host..."  Just ignore that.  The command still works.  Check the wpa_supplicant file if you don't believe me.  The wifi setup is in the network menu.
+Use raspi-config to attach to the wifi.  It might claim "sudo: unable to resolve host..."  Just ignore that.  The command still works.  Check the wpa_supplicant file if you don't believe me.  The wifi setup is in the network menu.
 
     pi@raspberry:~ $ sudo raspi-config
 
@@ -60,7 +60,7 @@ So we don't have to deal with transcribing commands to the pi, ssh into it so we
 
 The first time you connect, you might get the message below.  If so, all is good.
 
-    The authenticity of host '192.168.1.35 (192.168.1.35)' can't be established.
+    The authenticity of host 'pi-sd-card.local (192.168.1.35)' can't be established.
     ECDSA key fingerprint is SHA256:DbfOyQaGobbLDEgoOkWk1IK3W6wf1zPbNPlAA.
     Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 
@@ -82,13 +82,13 @@ If you get an error like the following, you probably previously connected to a d
 
 The important line is the third from the bottom ending with `/.ssh/known_hosts:227`.  This tells us that line 227 of the known_hosts file on the local system is the one we want to remove.  Use your favorite text editor to remove the line.  The line should look similar to the following - it will either be the IP address or the hostname depending on which you've used.
 
-    192.168.1.35 ecdsa-sha2-nistp256 AAAAE2VjZH... snip ...
+    pi-sd-card.local ecdsa-sha2-nistp256 AAAAE2VjZH... snip ...
 
 When you next try to ssh into the pi, it should give you the "The authenticity of host..." message and all will be good.
 
 Copy your ssh public key to the pi so you don't have to type the password each time.
 
-    adam@Adams-MacBook-Air: ssh-copy-id -i ~/.ssh/macbookair_id_rsa pi@192.168.1.35
+    adam@Adams-MacBook-Air: ssh-copy-id -i ~/.ssh/macbookair_id_rsa pi@pi-sd-card.local
 
 ## Security third
 
@@ -134,6 +134,8 @@ Verify the bootloader config has the BOOT_ORDER set to `0xf41`.
     TFTP_IP=
     TFTP_PREFIX=0
     BOOT_ORDER=0xf41
+
+Skip to "Copy OS image file" if all went well.  The next sections deal with updating the bootloader manually.
 
 ### Updating the Bootloader With No Changes
 

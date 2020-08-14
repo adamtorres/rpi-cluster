@@ -2,8 +2,8 @@
 
 echo "Adding a proxy for apt."
 cat << EOF | sudo tee -a /etc/apt/apt.conf.d/01proxy
-Acquire::http::Proxy "http://192.168.1.33:3142/";
-Acquire::https::Proxy "http://192.168.1.33:3142/";
+Acquire::http::Proxy "http://dockerhost.local:3142/";
+Acquire::https::Proxy "http://dockerhost.local:3142/";
 EOF
 
 echo "Updating apt and doing a full upgrade.  This gets the latest version of raspi-config."

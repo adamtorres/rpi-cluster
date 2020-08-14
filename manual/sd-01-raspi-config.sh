@@ -2,8 +2,8 @@
 
 echo "Adding a proxy for apt."
 cat << EOF | sudo tee -a /etc/apt/apt.conf.d/01proxy
-Acquire::http::Proxy "http://192.168.1.33:3142/";
-Acquire::https::Proxy "http://192.168.1.33:3142/";
+Acquire::http::Proxy "http://dockerhost.local:3142/";
+Acquire::https::Proxy "http://dockerhost.local:3142/";
 EOF
 
 echo "Disable serial console.  This removes 'console=serial0,115200' from '/boot/cmdline.txt'."
@@ -48,11 +48,12 @@ sed /boot/config.txt -i -e "s/^#.*dtoverlay=disable-bt/dtoverlay=disable-bt/"
 echo "Setting network options.  hostname"
 raspi-config nonint do_hostname pi-sd-card
 
-# Create or append to the alias file.
-cat << EOF >> ~/.bash_aliases
+# Create or append to the alias file.  Using ~ will put the file in /root.
+cat << EOF >> /home/pi/.bash_aliases
 alias ll="ls -laph"
 alias mounted="mount | grep -Ee '/dev/(sd|mm)\w*'"
 EOF
+chown pi:pi /home/pi/.bash_aliases
 
 echo "Creating folders for mounting the ssd partitions."
 mkdir /mnt/{ssd_boot,ssd_root}

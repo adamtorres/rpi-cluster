@@ -449,7 +449,9 @@ At this point, the Pi should be good to go.  It'd be nice to have a way to snaps
 
 ## USB/SATA Adapter not UASP
 
-UASP is some sort of fancy protocol (USB Attached SCSI Protocol) that makes data transfers faster.  Finding an adapter that works with the pi using UASP would be beneficial.  Unfortunately, even if a product claims to support UASP, it might not do so on the pi.  The ones I bought (Eluteng) did not.  I had to add the quirks line to cmdline.txt.  Scanning through `dmesg` shows that UAS is not being used for the device.
+UASP is some sort of fancy protocol (USB Attached SCSI Protocol) that makes data transfers faster.  Finding an adapter that works with the pi using UASP would be beneficial.  Unfortunately, even if a product claims to support UASP, it might not do so on the pi.  The ones I bought (Eluteng) did not.  I had to add the quirks line to cmdline.txt.  Scanning through `dmesg` shows that UAS is not being used for the device.  To clarify, the dongle appeared to use UAS while booted from the SD card but would refuse to boot from the SSD without the quirks line.
+
+    pi@pi-ABCDEF:~ $ sudo dmesg | grep usb
 
     [    1.552154] usb 2-1: new SuperSpeed Gen 1 USB device number 2 using xhci_hcd
     [    1.583195] usb 2-1: New USB device found, idVendor=174c, idProduct=55aa, bcdDevice= 1.00
@@ -461,3 +463,37 @@ UASP is some sort of fancy protocol (USB Attached SCSI Protocol) that makes data
     [    1.586686] usb 2-1: UAS is blacklisted for this device, using usb-storage instead
     [    1.586703] usb-storage 2-1:1.0: USB Mass Storage device detected
     [    1.587187] usb-storage 2-1:1.0: Quirks match for vid 174c pid 55aa: c00000
+
+Booted from SD card.  The quirks bit is not in the cmdline.txt on the SD card.
+
+    pi@pi-sd-card:~ $ lsusb -t
+
+    /:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/4p, 5000M
+        |__ Port 1: Dev 2, If 0, Class=Mass Storage, Driver=uas, 5000M
+    /:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/1p, 480M
+        |__ Port 1: Dev 2, If 0, Class=Hub, Driver=hub/4p, 480M
+            |__ Port 3: Dev 3, If 0, Class=Human Interface Device, Driver=usbhid, 12M
+            |__ Port 3: Dev 3, If 1, Class=Human Interface Device, Driver=usbhid, 12M
+            |__ Port 3: Dev 3, If 2, Class=Human Interface Device, Driver=usbhid, 12M
+
+And then from SSD.  It seems I need to learn more about this as this shows the SSD is using the UAS driver.
+
+    pi@pi-ABCDEF:~ $ lsusb -t
+
+    /:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/4p, 5000M
+        |__ Port 1: Dev 2, If 0, Class=Mass Storage, Driver=uas, 5000M
+    /:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/1p, 480M
+        |__ Port 1: Dev 2, If 0, Class=Hub, Driver=hub/4p, 480M
+            |__ Port 3: Dev 3, If 0, Class=Human Interface Device, Driver=usbhid, 12M
+            |__ Port 3: Dev 3, If 1, Class=Human Interface Device, Driver=usbhid, 12M
+            |__ Port 3: Dev 3, If 2, Class=Human Interface Device, Driver=usbhid, 12M
+
+Showing without the `-t` to show bus 2, device 2 is the SSD.  The other devices are hubs or Logitech keyboard/mouse combo (K400r, for the curious).
+
+    pi@pi-BB12D7:~ $ lsusb
+
+    Bus 002 Device 002: ID 174c:55aa ASMedia Technology Inc. Name: ASM1051E SATA 6Gb/s bridge, ASM1053E SATA 6Gb/s bridge, ASM1153 SATA 3Gb/s bridge, ASM1153E SATA 6Gb/s bridge
+    Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+    Bus 001 Device 003: ID 046d:c52b Logitech, Inc. Unifying Receiver
+    Bus 001 Device 002: ID 2109:3431 VIA Labs, Inc. Hub
+    Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub

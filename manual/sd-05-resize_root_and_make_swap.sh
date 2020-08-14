@@ -232,7 +232,8 @@ fi
 
 if main; then
   echo "Resized root filesystem.  Probably should reboot."
-  blkid /dev/sda?
+  lsblk -f "$ROOT_DEV"
+  blkid "${ROOT_DEV}"?
 else
   echo "Could not expand filesystem.\n${FAIL_REASON}"
 fi

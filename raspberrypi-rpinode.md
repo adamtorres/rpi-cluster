@@ -305,11 +305,7 @@ The last bit of output should show three partitions and some detail.
     /dev/sda2: LABEL="rootfs" UUID="706944a6-7d0f-4a45-9f8c-7fb07375e9f7" TYPE="ext4" PARTUUID="b44f6031-02"
     /dev/sda3: UUID="f6743640-305d-43d5-922a-74e1348761b3" TYPE="swap" PARTUUID="b44f6031-03"
 
-The resizing script will leave the SSD unmounted.  We need to mount it again.
-
-    pi@pi-sd-card:~ $ sudo /boot/provision/manual/mount-ssd.sh sda
-
-Create the boot/provision folder and clone the rpi-cluster repo there.
+The resizing script should leave the SSD mounted.  Create the boot/provision folder and clone the rpi-cluster repo there.
 
     pi@pi-sd-card:~ $ sudo mkdir /mnt/ssd_boot/provision/
     pi@pi-sd-card:~ $ sudo git clone https://github.com/adamtorres/rpi-cluster /mnt/ssd_boot/provision/
@@ -407,9 +403,7 @@ You should see a line in the boot up output showing the IP address.
 
     My IP address is 192.168.1.37
 
-!!! ssh is not active.
-
-Feel free to ssh into the Pi at this point.  You will have to remove a line from your local known_hosts file as described in the earlier section, "SSH into the pi".
+Feel free to ssh into the Pi at this point.  You will have to remove a line from your local known_hosts file as described in the earlier section, "SSH into the pi".  The default hostname is currently being used (raspberry).
 
 Use the default credentials to log in - pi/raspberry.  Run the next SSD script.  This will configure various settings including the hostname.  It will take a while as one of the first steps is to update the apt cache and do a full-upgrade.
 

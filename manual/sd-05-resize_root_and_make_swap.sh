@@ -213,6 +213,7 @@ main () {
     return 1
   fi
   # parted wasn't resizing the filesystem.  Odd.  Thought it was.
+  e2fsck -y -f "$ROOT_PART_DEV"
   resize2fs "$ROOT_PART_DEV"
   
   fix_partuuid

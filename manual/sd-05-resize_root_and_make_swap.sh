@@ -212,6 +212,8 @@ main () {
     FAIL_REASON="Root partition resize failed"
     return 1
   fi
+  # parted wasn't resizing the filesystem.  Odd.  Thought it was.
+  resize2fs "$ROOT_PART_DEV"
   
   fix_partuuid
   

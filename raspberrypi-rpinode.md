@@ -26,7 +26,7 @@ Create a 'provision' folder in the boot partition.  Since it is a FAT32 partitio
 Clone the rpi-cluster repo.  This gets a pile of scripts which will be used eventually.  These are put onto the SD card because some steps will be done before ssh is available to the pi.  TODO: Get ansible to do all this mess such that placing 'ssh.txt' on SD card is all the setup needed.
 Note the trailing ".".  That tells git to clone the repo in the current folder instead of creating a subfolder for the repo.
 
-    adam@Adams-MacBook-Air: git clone https://github.com/adamtorres/rpi-cluster/ .
+    adam@Adams-MacBook-Air: git clone https://github.com/adamtorres/rpi-cluster .
 
 Eject the SD card.
 

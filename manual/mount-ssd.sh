@@ -10,5 +10,5 @@ mount_device() {
       sudo mount "$1" "$2"
     fi
 }
-mount_device ${1}1 /mnt/ssd_boot
-mount_device ${1}2 /mnt/ssd_root
+mount_device /dev/${1}1 /mnt/ssd_boot
+mount_device /dev/${1}2 /mnt/ssd_root

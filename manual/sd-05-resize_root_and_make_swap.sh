@@ -126,7 +126,9 @@ $SWAP_PART_NUM
 w
 EOF
   if [ "$?" -eq 0 ]; then
+    unmount_parts
     sync
+    mount_parts
     # no label, UUID=0e21acb7-ba1d-438a-a201-615155e11c96
     MKSWAP_UUID_LINE=$(mkswap "$SWAP_PART_DEV" | grep "UUID")
     # 0e21acb7-ba1d-438a-a201-615155e11c96

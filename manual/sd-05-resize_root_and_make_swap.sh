@@ -133,7 +133,10 @@ EOF
     MKSWAP_UUID_LINE=$(mkswap "$SWAP_PART_DEV" | grep "UUID")
     # 0e21acb7-ba1d-438a-a201-615155e11c96
     SWAP_UUID=$(echo "$MKSWAP_UUID_LINE" | cut -d "=" -f 2)
-    echo "UUID=$SWAP_UUID none            swap    sw              0       0" >> /mnt/ssd_root/etc/fstab
+    FSTAB_LINE="UUID=$SWAP_UUID none            swap    sw              0       0"
+    echo "Adding the swap line to fstab."
+    echo "$FSTAB_LINE"
+    echo "$FSTAB_LINE" >> /mnt/ssd_root/etc/fstab
   fi
 }
 

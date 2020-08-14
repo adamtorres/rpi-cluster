@@ -54,8 +54,8 @@ NEW_HOSTNAME="pi-$(ip a show wlan0 | grep 'link/ether' | grep -o '..:..:.. ' | t
 raspi-config nonint do_hostname "$NEW_HOSTNAME"
 
 # Create or append to the alias file.
-cat << EOF >> ~/.bash_aliases
+cat << EOF >> /home/pi/.bash_aliases
 alias ll="ls -laph"
 alias mounted="mount | grep -Ee '/dev/(sd|mm)\w*'"
 EOF
-
+chown pi:pi /home/pi/.bash_aliases

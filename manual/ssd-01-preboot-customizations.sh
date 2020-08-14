@@ -18,4 +18,4 @@ rm /mnt/ssd_root/etc/init.d/resize2fs_once
 
 # Is this needed if we are going to use a similar provision script as on the SD card?
 echo "Create the ssh file to tell pi ssh should be enabled."
-touch /mnt/ssd_root/ssh
+touch /mnt/ssd_boot/ssh

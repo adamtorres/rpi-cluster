@@ -299,11 +299,16 @@ Run the next script to resize the root partition and create a swap partition.  I
 
     pi@pi-sd-card:~ $ sudo /boot/provision/manual/sd-05-resize_root_and_make_swap.sh
 
-The last bit of output should show three partitions and some detail.
+The last bit of output should show three partitions and some detail.  Important bits are that the rootfs uses a majority of the SSD's space and that the swap partition has a full UUID.
 
-    /dev/sda1: LABEL_FATBOOT="boot" LABEL="boot" UUID="592B-C92C" TYPE="vfat" PARTUUID="b44f6031-01"
-    /dev/sda2: LABEL="rootfs" UUID="706944a6-7d0f-4a45-9f8c-7fb07375e9f7" TYPE="ext4" PARTUUID="b44f6031-02"
-    /dev/sda3: UUID="f6743640-305d-43d5-922a-74e1348761b3" TYPE="swap" PARTUUID="b44f6031-03"
+    NAME   FSTYPE LABEL  UUID                                 FSAVAIL FSUSE% MOUNTPOINT
+    sda
+    ├─sda1 vfat   boot   592B-C92C                             201.1M    20% /mnt/ssd_boot
+    ├─sda2 ext4   rootfs 706944a6-7d0f-4a45-9f8c-7fb07375e9f7  426.5G     0% /mnt/ssd_root
+    └─sda3 swap          f1b8783e-e044-4f7e-8063-b2dedf308889
+    /dev/sda1: LABEL_FATBOOT="boot" LABEL="boot" UUID="592B-C92C" TYPE="vfat" PARTUUID="d44e21dc-01"
+    /dev/sda2: LABEL="rootfs" UUID="706944a6-7d0f-4a45-9f8c-7fb07375e9f7" TYPE="ext4" PARTUUID="d44e21dc-02"
+    /dev/sda3: UUID="f1b8783e-e044-4f7e-8063-b2dedf308889" TYPE="swap" PARTUUID="d44e21dc-03"
 
 The resizing script should leave the SSD mounted.  Create the boot/provision folder and clone the rpi-cluster repo there.
 

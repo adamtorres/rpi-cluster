@@ -4,7 +4,8 @@ echo "Remove the boot command line option that resizes the root partition."
 sed -i.bak -e "s|init=/usr/lib/raspi-config/init_resize.sh||" /mnt/ssd_boot/cmdline.txt
 
 echo "Add usb quirk option to cmdline.txt if it isn't there already."
-grep -qvxe "174c:55aa:u" /mnt/ssd_boot/cmdline.txt || sed -i /mnt/ssd_boot/cmdline.txt -e "s/root=/usb-storage.quirks=174c:55aa:u root=/"
+sed -i /mnt/ssd_boot/cmdline.txt -e "s/usb-storage.quirks=174c:55aa:u //"
+sed -i /mnt/ssd_boot/cmdline.txt -e "s/root=/usb-storage.quirks=174c:55aa:u root=/"
 
 echo "Copy the current wpa_supplicant.conf to the new boot folder."
 cp /etc/wpa_supplicant/wpa_supplicant.conf /mnt/ssd_boot/wpa_supplicant.conf

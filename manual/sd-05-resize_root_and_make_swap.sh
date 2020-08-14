@@ -152,6 +152,7 @@ EOF
   if [ "$?" -eq 0 ]; then
     sync
     mount_parts
+    echo "Fixing fstab and cmdline.txt to used new diskid '$DISKID' instead of '$OLD_DISKID'."
     sed -i "s/${OLD_DISKID}/${DISKID}/g" /mnt/ssd_root/etc/fstab
     sed -i "s/${OLD_DISKID}/${DISKID}/" /mnt/ssd_boot/cmdline.txt
   fi

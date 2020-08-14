@@ -84,6 +84,10 @@ The important line is the third from the bottom ending with `/.ssh/known_hosts:2
 
     pi-sd-card.local ecdsa-sha2-nistp256 AAAAE2VjZH... snip ...
 
+If you feel like it, you can use `sed` to remove the line.
+
+    adam@Adams-MacBook-Air: sed -i.bak "/pi-sd-card.local/d" ~/.ssh/known_hosts
+
 When you next try to ssh into the pi, it should give you the "The authenticity of host..." message and all will be good.
 
 Copy your ssh public key to the pi so you don't have to type the password each time.
@@ -312,7 +316,7 @@ Create the boot/provision folder and clone the rpi-cluster repo there.
 
 Run the next preboot customization script.
 
-    pi@pi-sd-card:~ $ sudo mkdir /mnt/ssd_boot/provision/manual/ssd-01-preboot-customizations.sh
+    pi@pi-sd-card:~ $ sudo /mnt/ssd_boot/provision/manual/ssd-01-preboot-customizations.sh
 
 This script will:
 
@@ -329,9 +333,9 @@ Shut down the Pi and remove the SD card.
 
     pi@pi-sd-card:~ $ sudo shutdown -h now
 
-If everything worked correctly, when you power on the Pi, it should boot as normal.
+If everything worked correctly, when you power on the Pi, it should boot as normal.  For some reason as yet unexplored, it might take a long time to boot.  If you get to around three minutes, I'm guessing something is wrong.
 
-### Pitfall - boot hangs up
+### Pitfall - boot hangs up with timeout warnings
 
 If you see the following message, it likely means your USB dongle doesn't support UAP.
 
@@ -353,17 +357,63 @@ Add the following to the start of /mnt/ssd_boot/cmdline.txt
 
 Shutdown and try again.
 
+### Pitfall - boot hangs up with just 4 raspberries
+
+The fstab and cmdline.txt files did not get the new PARTUUID for some reason.  Had to manually make the changes.
+
+Insert and boot to the SD card.
+
+Mount the SSD.
+
+    pi@pi-sd-card:~ $ sudo /boot/provision/manual/mount-ssd.sh sda
+
+Verify this is the problem.  The default PARTUUID from the image file is "2fed7fee".
+
+    pi@pi-sd-card:~ $ cat /mnt/ssd_root/etc/fstab
+
+    proc            /proc           proc    defaults          0       0
+    PARTUUID=2fed7fee-01  /boot           vfat    defaults          0       2
+    PARTUUID=2fed7fee-02  /               ext4    defaults,noatime  0       1
+    UUID=f6743640-305d-43d5-922a-74e1348761b3 none            swap    sw              0       0
+
+Get the new PARTUUID of the SSD.
+
+    pi@pi-sd-card:~ $ sudo blkid /dev/sda?
+    /dev/sda1: LABEL_FATBOOT="boot" LABEL="boot" UUID="592B-C92C" TYPE="vfat" PARTUUID="e1c1787c-01"
+    /dev/sda2: LABEL="rootfs" UUID="706944a6-7d0f-4a45-9f8c-7fb07375e9f7" TYPE="ext4" PARTUUID="e1c1787c-02"
+    /dev/sda3: UUID="f6743640-305d-43d5-922a-74e1348761b3" TYPE="swap" PARTUUID="e1c1787c-03"
+
+Make the changes.
+
+    pi@pi-sd-card:~ $ sudo sed -i "s/2fed7fee/e1c1787c/g" /mnt/ssd_root/etc/fstab
+    pi@pi-sd-card:~ $ sudo sed -i "s/2fed7fee/e1c1787c/g" /mnt/ssd_boot/cmdline.txt
+
+Verify the changes worked.
+
+    pi@pi-sd-card:~ $ cat /mnt/ssd_root/etc/fstab
+    
+    proc            /proc           proc    defaults          0       0
+    PARTUUID=e1c1787c-01  /boot           vfat    defaults          0       2
+    PARTUUID=e1c1787c-02  /               ext4    defaults,noatime  0       1
+    UUID=f6743640-305d-43d5-922a-74e1348761b3 none            swap    sw              0       0
+
+    pi@pi-sd-card:~ $ cat /mnt/ssd_boot/cmdline.txt
+    
+    console=serial0,115200 console=tty1 root=PARTUUID=e1c1787c-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait quiet
+
 ### First boot
 
 You should see a line in the boot up output showing the IP address.
 
     My IP address is 192.168.1.37
 
+!!! ssh is not active.
+
 Feel free to ssh into the Pi at this point.  You will have to remove a line from your local known_hosts file as described in the earlier section, "SSH into the pi".
 
 Use the default credentials to log in - pi/raspberry.  Run the next SSD script.  This will configure various settings including the hostname.  It will take a while as one of the first steps is to update the apt cache and do a full-upgrade.
 
-    pi@raspberry:~ $ sudo mkdir /mnt/ssd_boot/provision/manual/ssd-02-raspi-config.sh
+    pi@raspberry:~ $ sudo /boot/provision/manual/ssd-02-raspi-config.sh
 
 Reboot afterwards as it will complain about the hostname when doing sudo commands.
 
@@ -373,7 +423,17 @@ Reboot afterwards as it will complain about the hostname when doing sudo command
 
 Run the next SSD script to turn off the file-based swap that Pi uses by default.  The swap partition is defined in fstab already so it should already be active.
 
-    pi@pi-ABCDEF:~ $ sudo mkdir /mnt/ssd_boot/provision/manual/ssd-03-swap_swaps.sh
+    pi@pi-ABCDEF:~ $ sudo /boot/provision/manual/ssd-03-swap_swaps.sh
+
+    Before:
+                  total        used        free      shared  buff/cache   available
+    Mem:           8015          95        7837           8          81        7735
+    Swap:          8279           0        8279
+    
+    After:
+                  total        used        free      shared  buff/cache   available
+    Mem:           8015         101        7832           8          81        7730
+    Swap:          8179           0        8179
 
 ### Security Third, Again
 
@@ -401,4 +461,3 @@ UASP is some sort of fancy protocol (USB Attached SCSI Protocol) that makes data
     [    1.586686] usb 2-1: UAS is blacklisted for this device, using usb-storage instead
     [    1.586703] usb-storage 2-1:1.0: USB Mass Storage device detected
     [    1.587187] usb-storage 2-1:1.0: Quirks match for vid 174c pid 55aa: c00000
-

@@ -1,11 +1,14 @@
 #! /usr/bin/env bash
 
-if [ ! -d "/mnt/ssd1" ]; then
-  sudo mkdir /mnt/ssd1
-fi
-if [ ! -d "/mnt/ssd2" ]; then
-  sudo mkdir /mnt/ssd2
-fi
-sudo mount /dev/sda1 /mnt/ssd1
-sudo mount /dev/sda2 /mnt/ssd2
-
+mount_device() {
+    echo "mounting $1 to $2"
+    if [ ! -d "$2" ]; then
+      sudo mkdir "$2"
+    fi
+    findmnt "$2" -n > /dev/null
+    if [ "$?" -eq 1 ]; then
+      sudo mount "$1" "$2"
+    fi
+}
+mount_device ${1}1 /mnt/ssd_boot
+mount_device ${1}2 /mnt/ssd_root

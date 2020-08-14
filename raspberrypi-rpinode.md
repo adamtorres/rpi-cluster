@@ -299,7 +299,7 @@ The last bit of output should show three partitions and some detail.
 
     /dev/sda1: LABEL_FATBOOT="boot" LABEL="boot" UUID="592B-C92C" TYPE="vfat" PARTUUID="b44f6031-01"
     /dev/sda2: LABEL="rootfs" UUID="706944a6-7d0f-4a45-9f8c-7fb07375e9f7" TYPE="ext4" PARTUUID="b44f6031-02"
-    /dev/sda3: PARTUUID="b44f6031-03"
+    /dev/sda3: UUID="f6743640-305d-43d5-922a-74e1348761b3" TYPE="swap" PARTUUID="b44f6031-03"
 
 The resizing script will leave the SSD unmounted.  We need to mount it again.
 

@@ -444,6 +444,7 @@ Change the default password.
 ## Done
 
 At this point, the Pi should be good to go.  It'd be nice to have a way to snapshot the drive.  Just a command if it were a virtual machine.
+If you want to provision another Pi/SSD, plug the SD card in, boot it up, and start from the "Firmware" step.  You will likely have to remove the line from your known_hosts file again.
 
 # Annoyances
 

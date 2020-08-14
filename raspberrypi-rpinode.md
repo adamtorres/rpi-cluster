@@ -308,7 +308,7 @@ The resizing script will leave the SSD unmounted.  We need to mount it again.
 Create the boot/provision folder and clone the rpi-cluster repo there.
 
     pi@pi-sd-card:~ $ sudo mkdir /mnt/ssd_boot/provision/
-    pi@pi-sd-card:~ $ sudo git clone https://github.com/adamtorres/rpi-cluster/ /mnt/ssd_boot/provision/
+    pi@pi-sd-card:~ $ sudo git clone https://github.com/adamtorres/rpi-cluster /mnt/ssd_boot/provision/
 
 Run the next preboot customization script.
 

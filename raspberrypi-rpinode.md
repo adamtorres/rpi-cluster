@@ -264,16 +264,19 @@ Write the image copied to the sd card to the ssd.  You can use your favorite way
 
     pi@pi-sd-card:~ $ sudo /boot/provision/manual/sd-04-write-image.sh sda ~/ISOs/2020-05-27-raspios-buster-lite-armhf.img
 
-    # Run one
-    1837105152 bytes (1.8 GB, 1.7 GiB) copied, 41 s, 44.7 MB/s
-    442+0 records in
-    442+0 records out
-    1853882368 bytes (1.9 GB, 1.7 GiB) copied, 41.8977 s, 44.2 MB/s
-    
-    # Run two - different pi and ssd
+    writing /home/pi/ISOs/2020-05-27-raspios-buster-lite-armhf.img to sda...
+    dest size = 500107862016
     1795162112 bytes (1.8 GB, 1.7 GiB) copied, 7 s, 256 MB/s
     442+0 records in
     442+0 records out
+    1853882368 bytes (1.9 GB, 1.7 GiB) copied, 8.00288 s, 232 MB/s
+
+    # Times for another run
+    1837105152 bytes (1.8 GB, 1.7 GiB) copied, 41 s, 44.7 MB/s
+    1853882368 bytes (1.9 GB, 1.7 GiB) copied, 41.8977 s, 44.2 MB/s
+    
+    # Times for yet another run - different pi and ssd
+    1795162112 bytes (1.8 GB, 1.7 GiB) copied, 7 s, 256 MB/s
     1853882368 bytes (1.9 GB, 1.7 GiB) copied, 7.60404 s, 244 MB/s
 
 ### PreBoot Customizations

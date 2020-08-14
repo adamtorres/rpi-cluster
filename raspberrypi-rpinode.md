@@ -245,7 +245,7 @@ These are steps that would be repeated for each SSD.  You should be able to prep
 
 Plug in the USB/SATA dongle with the 500GB SSD attached.  If there is one, the only other attached USB device should be the keyboard wireless receiver.
 
-Check what is currently on the drive as it will be completely formatted in a moment.  Mount the drive to check contents if needed.  Don't forget to unmount the drive before proceeding.
+Check what is currently on the drive as it will be completely formatted in a moment.  Mount the drive to check contents if needed.  Don't forget to unmount the drive before proceeding.  It doesn't matter what "sda" currently has as it will be completely removed in a moment.  In other words, be certain this is the drive you want to use.
 
     pi@pi-sd-card:~ $ lsblk -f
 

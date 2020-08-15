@@ -202,7 +202,7 @@ Verify the bootloader config has the BOOT_ORDER set to `0xf41`.
     TFTP_PREFIX=0
     BOOT_ORDER=0xf41
 
-Skip to "Copy OS image file" if all went well.  The next sections deal with updating the bootloader manually.
+Skip to "Prepare the SSD" if all went well.  The next sections deal with updating the bootloader manually.
 
 ### Updating the Bootloader With No Changes
 

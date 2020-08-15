@@ -299,8 +299,9 @@ Run the next script to resize the root partition and create a swap partition.  I
 
     pi@pi-sd-card:~ $ sudo /boot/provision/manual/sd-05-resize_root_and_make_swap.sh
 
-The last bit of output should show three partitions and some detail.  Important bits are that the rootfs uses a majority of the SSD's space and that the swap partition has a full UUID.
+The last bit of output should show three partitions and some detail.  Important bits are that the rootfs uses a majority of the SSD's space and that the swap partition has a full UUID.  It shows the changed cmdline.txt and fstab files.  Visually verify the PARTUUID matches between the files and the blkid output.
 
+    Looking at the drives:
     NAME   FSTYPE LABEL  UUID                                 FSAVAIL FSUSE% MOUNTPOINT
     sda
     ├─sda1 vfat   boot   592B-C92C                             201.1M    20% /mnt/ssd_boot
@@ -309,6 +310,15 @@ The last bit of output should show three partitions and some detail.  Important 
     /dev/sda1: LABEL_FATBOOT="boot" LABEL="boot" UUID="592B-C92C" TYPE="vfat" PARTUUID="d44e21dc-01"
     /dev/sda2: LABEL="rootfs" UUID="706944a6-7d0f-4a45-9f8c-7fb07375e9f7" TYPE="ext4" PARTUUID="d44e21dc-02"
     /dev/sda3: UUID="f1b8783e-e044-4f7e-8063-b2dedf308889" TYPE="swap" PARTUUID="d44e21dc-03"
+    
+    Looking at cmdline.txt and fstab:
+    console=serial0,115200 console=tty1 root=PARTUUID=3c673504-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait quiet init=/usr/lib/raspi-config/init_resize.sh
+    proc            /proc           proc    defaults          0       0
+    PARTUUID=3c673504-01  /boot           vfat    defaults          0       2
+    PARTUUID=3c673504-02  /               ext4    defaults,noatime  0       1
+    UUID=8be08ee1-4a42-43ba-82da-83994bd4b597 none            swap    sw              0       0
+    
+    Verify the PARTUUID in the files match the drive.
 
 The resizing script should leave the SSD mounted.  Create the boot/provision folder and clone the rpi-cluster repo there.
 

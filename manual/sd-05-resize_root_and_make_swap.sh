@@ -235,8 +235,13 @@ fi
 
 if main; then
   echo "Resized root filesystem.  Probably should reboot."
+  echo "Looking at the drives:"
   lsblk -f "$ROOT_DEV"
   blkid "${ROOT_DEV}"?
+  echo "Looking at cmdline.txt and fstab:"
+  cat /mnt/ssd_boot/cmdline.txt
+  cat /mnt/ssd_root/etc/fstab
+  echo "Verify the PARTUUID in the files match the drive."
 else
   echo "Could not expand filesystem.\n${FAIL_REASON}"
 fi

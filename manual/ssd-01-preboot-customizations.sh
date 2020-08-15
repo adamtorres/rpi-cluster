@@ -20,3 +20,14 @@ rm /mnt/ssd_root/etc/init.d/resize2fs_once
 # Is this needed if we are going to use a similar provision script as on the SD card?
 echo "Create the ssh file to tell pi ssh should be enabled."
 touch /mnt/ssd_boot/ssh
+
+echo "disable bluetooth as we do not need it at the moment."
+grep -qxe '.*dtoverlay=disable-bt' /mnt/ssd_boot/config.txt || echo 'dtoverlay=disable-bt' >> /mnt/ssd_boot/config.txt
+sed /mnt/ssd_boot/config.txt -i -e "s/^#.*dtoverlay=disable-bt/dtoverlay=disable-bt/"
+
+# Create or append to the alias file.
+cat << EOF >> /mnt/ssd_root/home/pi/.bash_aliases
+alias ll="ls -laph"
+alias mounted="mount | grep -Ee '/dev/(sd|mm)\w*'"
+EOF
+chown pi:pi /mnt/ssd_root/home/pi/.bash_aliases

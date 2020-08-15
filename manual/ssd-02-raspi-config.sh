@@ -45,17 +45,7 @@ echo "disable OneWire"
 raspi-config nonint do_onewire 1
 echo "disable remote GPIO pins"
 raspi-config nonint do_rgpio 1
-echo "disable bluetooth as we do not need it at the moment."
-grep -qxe '.*dtoverlay=disable-bt' /boot/config.txt || echo 'dtoverlay=disable-bt' >> /boot/config.txt
-sed /boot/config.txt -i -e "s/^#.*dtoverlay=disable-bt/dtoverlay=disable-bt/"
 echo "Setting network options.  hostname"
 # Generates a hostname that is "pi-" followed by the last 6 characters of the wifi MAC addres.
 NEW_HOSTNAME="pi-$(ip a show wlan0 | grep 'link/ether' | grep -o '..:..:.. ' | tr '[:lower:]' '[:upper:]' | tr -d '[:punct:]' | tr -d '[:blank:]')"
 raspi-config nonint do_hostname "$NEW_HOSTNAME"
-
-# Create or append to the alias file.
-cat << EOF >> /home/pi/.bash_aliases
-alias ll="ls -laph"
-alias mounted="mount | grep -Ee '/dev/(sd|mm)\w*'"
-EOF
-chown pi:pi /home/pi/.bash_aliases

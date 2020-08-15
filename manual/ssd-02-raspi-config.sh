@@ -9,8 +9,8 @@ EOF
 echo "Updating apt and doing a full upgrade.  This gets the latest version of raspi-config."
 apt-get update && apt-get full-upgrade -y
 
-echo "Disable serial console.  This removes 'console=serial0,115200' from '/boot/cmdline.txt'."
-raspi-config nonint do_serial 1
+# echo "Disable serial console.  This removes 'console=serial0,115200' from '/boot/cmdline.txt'."
+# raspi-config nonint do_serial 1
 echo "Change video memory to 16MB.  Don't need much as this is a headless setup.  Changed to 32 to avoid vchi warnings."
 raspi-config nonint do_memory_split 32
 echo "Explicitly set plain HDMI mode.  This will use HDMI if it is available on boot and switch to tvout otherwise."

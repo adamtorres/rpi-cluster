@@ -31,3 +31,6 @@ alias ll="ls -laph"
 alias mounted="mount | grep -Ee '/dev/(sd|mm)\w*'"
 EOF
 chown pi:pi /mnt/ssd_root/home/pi/.bash_aliases
+
+# Disable serial console.  This was done via raspi-config.  Moved here for reasons.
+sed -i /mnt/ssd_boot/cmdline.txt -e "s/console=serial0,[0-9]\+ //"
